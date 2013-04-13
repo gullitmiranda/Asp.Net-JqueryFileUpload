@@ -27,7 +27,7 @@ namespace JqueryFileUpload
         private void SetValues(string fileName, int fileLength, string fullPath)
         {
             name = fileName;
-            type = "image/png";
+            type = "image/jpeg";
             size = fileLength;
             progress = "1.0";
             url = HandlerPath + "upload.ashx?f=" + fileName;
@@ -36,7 +36,7 @@ namespace JqueryFileUpload
 
             var ext = Path.GetExtension(fullPath);
             
-            var fileSize = ConvertBytesToMegabytes(new FileInfo(fullPath).Length);
+            var fileSize = ConvertBytesToMegabytes(size);
             if (fileSize > 3 || !IsImage(ext)) thumbnail_url = "/Content/img/generalFile.png";
             else thumbnail_url = @"data:image/png;base64," + EncodeFile(fullPath);
         }

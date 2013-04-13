@@ -25,11 +25,11 @@ namespace JqueryFileUpload
             get
             {
 
-                //pega o caminho das fotos
+                // pega o caminho das fotos
                 string dirFoto = "~/Uploads/";
                 var mapPath = HttpContext.Current.Server.MapPath(dirFoto);
 
-                //verifica se o diretório já existe
+                // verifica se o diretório já existe
                 if (!Directory.Exists(mapPath))
                 {
                     //se o diretório não existe cria
@@ -151,28 +151,35 @@ namespace JqueryFileUpload
         // Envia arquivo completo
         private void UploadWholeFile(HttpContext context, List<FilesStatus> statuses)
         {
+            // Aqui você personaliza as dimensões
+            int imgHeight = Convert.ToInt32(context.Request.Form["imgHeight"]);
+            int imgWidth = Convert.ToInt32(context.Request.Form["imgWidth"]);
+
+            // Conta o número de arquivos
+            var fileCounts =
+                new DirectoryInfo(StorageRoot)
+                    .GetFiles("*", SearchOption.TopDirectoryOnly).Count(f => !f.Attributes.HasFlag(FileAttributes.Hidden));
+
+            // Aqui você personaliza o nome do arquivo que será salvo
+            var imgPrefixName = context.Request.Form["imgName"] + "_";
+
             // efetua loop na lista de arquivos
             for (int i = 0; i < context.Request.Files.Count; i++)
             {
                 // Pega o arquivo
                 var file = context.Request.Files[i];
 
-                // Aqui você personaliza o nome do arquivo que será salvo
-                var imgName = "__" + Path.GetFileName(file.FileName);
-
-                // Aqui você personaliza as dimensões
-                int imgHeight = 50;
-                int imgWidth = 150;
-
                 // Define o caminho completo onde o arquivo irá ser salvo (Diretório + Nome do Arquivo)
+                var imgName = imgPrefixName + "_" + fileCounts + ".jpg";
                 var fullPath = StorageRoot + imgName;
+                fileCounts++;
 
                 // Manipula a imagem aplicando um fundo branco e redimensonando a mesma
                 Stream imgStream = file.InputStream;
-                Bitmap newFile = ResizeImage(imgStream, imgWidth, imgHeight);
+                var newFile = ResizeImage(imgStream, imgWidth, imgHeight);
 
                 // Salva a imagem em formato Jpeg
-                newFile.Save(fullPath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                newFile.Save(fullPath, ImageFormat.Jpeg);
                 statuses.Add(new FilesStatus(imgName, file.ContentLength, fullPath));
             }
         }

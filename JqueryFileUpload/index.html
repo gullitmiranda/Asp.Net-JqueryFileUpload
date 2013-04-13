@@ -43,6 +43,22 @@
     </div>
     <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="upload.ashx" method="POST" enctype="multipart/form-data">
+        <div class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="inputNome">Nome</label>
+                <div class="controls">
+                    <input type="text" id="imgName" placeholder="Nome" name="imgName">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputLargura">Tamanho</label>
+                <div class="controls">
+                    <input type="number" id="imgWidth" placeholder="Largura" name="imgWidth" class="span1">
+                    x
+                    <input type="number" id="imgHeight" placeholder="Altura" name="imgHeight"  class="span1">
+                </div>
+            </div>
+        </div>
         <!-- Redirect browsers with JavaScript disabled to the origin page -->
         <noscript><input type="hidden" name="redirect" value="http://blueimp.github.com/jQuery-File-Upload/"></noscript>
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
