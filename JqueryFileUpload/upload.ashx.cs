@@ -20,20 +20,25 @@ namespace JqueryFileUpload
         private readonly JavaScriptSerializer js;
 
         // Diretório onde o arquivo será salvo
-        private string StorageRoot { get {
-            //pega o caminho das fotos
-            string urlFoto = WebConfigurationManager.AppSettings["UrlBaseFotos"];
-
-            //verifica se o diretório já existe
-            if (!Directory.Exists(Server.MapPath(urlFoto)))
+        private string StorageRoot
+        {
+            get
             {
-                //se o diretório não existe cria
-                Directory.CreateDirectory(Server.MapPath(urlFoto));
+
+                //pega o caminho das fotos
+                string dirFoto = "~/Uploads/";
+                var mapPath = HttpContext.Current.Server.MapPath(dirFoto);
+
+                //verifica se o diretório já existe
+                if (!Directory.Exists(mapPath))
+                {
+                    //se o diretório não existe cria
+                    Directory.CreateDirectory(mapPath);
+                }
+
+                return Path.Combine(mapPath);
+
             }
-            return urlFoto;
-            // subistituido pelo código do cliente para buscar o diretório as configurações
-            // return Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Uploads/"));
-        }
         }
 
         // metodo de inicialização
